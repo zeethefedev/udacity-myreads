@@ -5,7 +5,18 @@ import { getFilteredBooks } from "../utils/books.utils";
 
 const allBooks = BOOKS;
 
-function Home({ handleShowSearchPage }) {
+function BookShelf({ title, books }) {
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{title}</h2>
+      <div className="bookshelf-books">
+        <BookList books={books} />
+      </div>
+    </div>
+  );
+}
+
+function Home() {
   const currentlyReadingBooks = getFilteredBooks(allBooks, "currentlyReading");
   const wantToReadBooks = getFilteredBooks(allBooks, "wantToRead");
   const readBooks = getFilteredBooks(allBooks, "read");
@@ -17,14 +28,14 @@ function Home({ handleShowSearchPage }) {
       </div>
       <div className="list-books-content">
         <div>
-          <BookList title="Currently Reading" books={currentlyReadingBooks} />
-          <BookList title="Want to read" books={wantToReadBooks} />
-          <BookList title="Read" books={readBooks} />
+          <BookShelf title="Currently Reading" books={currentlyReadingBooks} />
+          <BookShelf title="Want to read" books={wantToReadBooks} />
+          <BookShelf title="Read" books={readBooks} />
         </div>
       </div>
-      <div className="open-search">
+      {/* <div className="open-search">
         <a onClick={handleShowSearchPage}>Add a book</a>
-      </div>
+      </div> */}
     </div>
   );
 }

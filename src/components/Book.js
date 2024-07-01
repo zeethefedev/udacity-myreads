@@ -34,11 +34,13 @@ function Book({ book }) {
         </div>
       </div>
       <div className="book-title">{title}</div>
-      <>
-        {authors.map((author) => (
-          <div className="book-authors">{author}</div>
-        ))}
-      </>
+      {authors && (
+        <>
+          {authors.map((author) => (
+            <div className="book-authors">{author}</div>
+          ))}
+        </>
+      )}
     </div>
   );
 }
