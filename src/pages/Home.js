@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BookList from "../components/BookList";
-import { BOOKS } from "../utils/testdata";
 import { getFilteredBooks } from "../utils/books.utils";
-
-const allBooks = BOOKS;
+import { getAll } from "../utils/BooksAPI";
+import { Link } from "react-router-dom";
 
 function BookShelf({ title, books }) {
   return (
@@ -17,6 +16,17 @@ function BookShelf({ title, books }) {
 }
 
 function Home() {
+  const [allBooks, setAllBooks] = useState([]);
+
+  useEffect(() => {
+    getAll().then((res) => {
+      const error = res.error;
+      if (!error) {
+        setAllBooks(res);
+      }
+    });
+  }, []);
+
   const currentlyReadingBooks = getFilteredBooks(allBooks, "currentlyReading");
   const wantToReadBooks = getFilteredBooks(allBooks, "wantToRead");
   const readBooks = getFilteredBooks(allBooks, "read");
@@ -26,16 +36,16 @@ function Home() {
       <div className="list-books-title">
         <h1>MyReads</h1>
       </div>
-      <div className="list-books-content">
-        <div>
+      {allBooks.length > 0 && (
+        <div className="list-books-content">
           <BookShelf title="Currently Reading" books={currentlyReadingBooks} />
           <BookShelf title="Want to read" books={wantToReadBooks} />
           <BookShelf title="Read" books={readBooks} />
         </div>
+      )}
+      <div className="open-search">
+        <Link to="search">Add a book</Link>
       </div>
-      {/* <div className="open-search">
-        <a onClick={handleShowSearchPage}>Add a book</a>
-      </div> */}
     </div>
   );
 }

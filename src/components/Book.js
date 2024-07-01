@@ -1,10 +1,11 @@
 import React from "react";
+import { update } from "../utils/BooksAPI";
 
 const OPTIONS = ["currentlyReading", "wantToRead", "read", "none"];
 
-function SelectMoveTo() {
+function SelectMoveTo({ handleMoveTo }) {
   return (
-    <select>
+    <select onChange={handleMoveTo}>
       <option value="none" disabled>
         Move to...
       </option>
@@ -16,7 +17,12 @@ function SelectMoveTo() {
 }
 
 function Book({ book }) {
-  const { imageLinks, title, authors, shelf } = book;
+  const { id, imageLinks, title, authors, shelf } = book;
+
+  const handleMoveTo = (e) => {
+    const newShelf = e.target.value;
+    update(book, newShelf);
+  };
 
   return (
     <div className="book">
@@ -30,7 +36,7 @@ function Book({ book }) {
           }}
         ></div>
         <div className="book-shelf-changer">
-          <SelectMoveTo />
+          <SelectMoveTo handleMoveTo={handleMoveTo} />
         </div>
       </div>
       <div className="book-title">{title}</div>
