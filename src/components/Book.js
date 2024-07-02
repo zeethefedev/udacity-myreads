@@ -3,9 +3,9 @@ import { update } from "../utils/BooksAPI";
 
 const OPTIONS = ["currentlyReading", "wantToRead", "read", "none"];
 
-function SelectMoveTo({ handleMoveTo }) {
+function SelectMoveTo({ value, handleMoveTo }) {
   return (
-    <select onChange={handleMoveTo}>
+    <select onChange={handleMoveTo} value={value}>
       <option value="none" disabled>
         Move to...
       </option>
@@ -16,12 +16,14 @@ function SelectMoveTo({ handleMoveTo }) {
   );
 }
 
-function Book({ book }) {
+function Book({ book, handleUpdateBook }) {
   const { id, imageLinks, title, authors, shelf } = book;
 
   const handleMoveTo = (e) => {
     const newShelf = e.target.value;
-    update(book, newShelf);
+    update(book, newShelf).then((res) => {
+      handleUpdateBook && handleUpdateBook(res);
+    });
   };
 
   return (
@@ -36,7 +38,7 @@ function Book({ book }) {
           }}
         ></div>
         <div className="book-shelf-changer">
-          <SelectMoveTo handleMoveTo={handleMoveTo} />
+          <SelectMoveTo value={shelf} handleMoveTo={handleMoveTo} />
         </div>
       </div>
       <div className="book-title">{title}</div>

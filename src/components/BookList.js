@@ -1,14 +1,13 @@
 import React from "react";
 import Book from "./Book";
-import { BOOKS } from "../utils/testdata";
 
 function BookList(props) {
-  const { books = BOOKS } = props;
+  const { books, handleUpdateBook } = props;
   return (
     <ol className="books-grid">
       {books.map((book) => (
         <li>
-          <Book book={book} />
+          <Book book={book} handleUpdateBook={handleUpdateBook} />
         </li>
       ))}
     </ol>
