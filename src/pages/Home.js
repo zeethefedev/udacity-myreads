@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BookList from "../components/BookList";
-import { getFilteredBooks, updateBooks } from "../utils/books.utils";
+import {
+  SHELVES,
+  getFilteredBooks,
+  reformatString,
+  updateBooks,
+} from "../utils/books.utils";
 import { getAll } from "../utils/BooksAPI";
 import { Link } from "react-router-dom";
+
+const shelves = SHELVES.filter((shelf) => shelf !== "none");
 
 function BookShelf({ title, books, handleUpdateBook }) {
   return (
@@ -15,9 +22,7 @@ function BookShelf({ title, books, handleUpdateBook }) {
   );
 }
 
-function Home() {
-  const [allBooks, setAllBooks] = useState([]);
-
+function Home({ allBooks, setAllBooks }) {
   useEffect(() => {
     handleGetAllBooks();
   }, []);
@@ -30,14 +35,11 @@ function Home() {
       }
     });
   };
+
   const handleUpdateBook = (newShelf) => {
     const newBooks = updateBooks(allBooks, newShelf);
     setAllBooks(newBooks);
   };
-
-  const currentlyReadingBooks = getFilteredBooks(allBooks, "currentlyReading");
-  const wantToReadBooks = getFilteredBooks(allBooks, "wantToRead");
-  const readBooks = getFilteredBooks(allBooks, "read");
 
   return (
     <div className="list-books">
@@ -46,21 +48,13 @@ function Home() {
       </div>
       {allBooks.length > 0 && (
         <div className="list-books-content">
-          <BookShelf
-            title="Currently Reading"
-            books={currentlyReadingBooks}
-            handleUpdateBook={handleUpdateBook}
-          />
-          <BookShelf
-            title="Want to read"
-            books={wantToReadBooks}
-            handleUpdateBook={handleUpdateBook}
-          />
-          <BookShelf
-            title="Read"
-            books={readBooks}
-            handleUpdateBook={handleUpdateBook}
-          />
+          {shelves.map((shelf) => (
+            <BookShelf
+              title={reformatString(shelf)}
+              books={getFilteredBooks(allBooks, shelf)}
+              handleUpdateBook={handleUpdateBook}
+            />
+          ))}
         </div>
       )}
       <div className="open-search">

@@ -2,21 +2,34 @@ import React, { useState } from "react";
 import { search } from "../utils/BooksAPI";
 import BookList from "../components/BookList";
 import { Link } from "react-router-dom";
+import { updateBookSearch } from "../utils/books.utils";
 
-function Search() {
+function Search({ allBooks }) {
   const [searchText, setSearchText] = useState();
   const [bookResult, setBookResult] = useState();
+  const [notFoundMessage, setNotFoundMessage] = useState();
+
   const handleSetSearch = (e) => {
     setSearchText(e.target.value);
+    if (!e.target.value) {
+      setBookResult();
+      setNotFoundMessage();
+    }
   };
 
-  const handleSearch = () => {
-    search(searchText).then((res) => {
-      const error = res.error;
-      if (!error) {
-        setBookResult(res);
-      }
-    });
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      search(searchText).then((res) => {
+        const error = res.error;
+        if (!error) {
+          const newBooks = updateBookSearch(allBooks, res);
+          setBookResult(newBooks);
+        } else {
+          setBookResult();
+          setNotFoundMessage("We cannot find what your are looking for");
+        }
+      });
+    }
   };
 
   return (
@@ -31,15 +44,15 @@ function Search() {
             placeholder="Search by title, author, or ISBN"
             value={searchText}
             onChange={handleSetSearch}
+            onKeyDown={handleSearch}
           />
         </div>
-        <button onClick={handleSearch}>Search</button>
       </div>
       <div className="search-books-results">
         {bookResult ? (
           <BookList books={bookResult} />
         ) : (
-          <div>We cannot find what your are looking for</div>
+          <div>{notFoundMessage}</div>
         )}
       </div>
     </div>

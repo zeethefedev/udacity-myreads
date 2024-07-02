@@ -1,15 +1,14 @@
 import React from "react";
 import { update } from "../utils/BooksAPI";
-
-const OPTIONS = ["currentlyReading", "wantToRead", "read", "none"];
+import { SHELVES } from "../utils/books.utils";
 
 function SelectMoveTo({ value, handleMoveTo }) {
   return (
     <select onChange={handleMoveTo} value={value}>
-      <option value="none" disabled>
+      <option value="" disabled>
         Move to...
       </option>
-      {OPTIONS.map((opt) => (
+      {SHELVES.map((opt) => (
         <option value={opt}>{opt}</option>
       ))}
     </select>
@@ -34,7 +33,7 @@ function Book({ book, handleUpdateBook }) {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${imageLinks.thumbnail})`,
+            backgroundImage: `url(${imageLinks?.thumbnail})`,
           }}
         ></div>
         <div className="book-shelf-changer">
