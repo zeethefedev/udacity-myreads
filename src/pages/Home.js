@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 
 const shelves = SHELVES.filter((shelf) => shelf !== "none");
 
-function BookShelf({ title, books, handleUpdateBook }) {
+function BookShelf(props) {
+  const { title, books, handleUpdateBook } = props;
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{title}</h2>
@@ -48,8 +49,9 @@ function Home({ allBooks, setAllBooks }) {
       </div>
       {allBooks.length > 0 && (
         <div className="list-books-content">
-          {shelves.map((shelf) => (
+          {shelves.map((shelf, index) => (
             <BookShelf
+              key={index}
               title={reformatString(shelf)}
               books={getFilteredBooks(allBooks, shelf)}
               handleUpdateBook={handleUpdateBook}

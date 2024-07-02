@@ -5,20 +5,21 @@ import { Link } from "react-router-dom";
 import { updateBookSearch } from "../utils/books.utils";
 
 function Search({ allBooks }) {
-  const [searchText, setSearchText] = useState();
+  const [searchText, setSearchText] = useState("");
   const [bookResult, setBookResult] = useState();
   const [notFoundMessage, setNotFoundMessage] = useState();
 
   const handleSetSearch = (e) => {
-    setSearchText(e.target.value);
-    if (!e.target.value) {
+    const newSearchText = e.target.value;
+    setSearchText(newSearchText);
+    if (!newSearchText) {
       setBookResult();
       setNotFoundMessage();
     }
   };
 
   const handleSearch = (e) => {
-    if (e.key === "Enter") {
+    if (searchText && e.key === "Enter") {
       search(searchText).then((res) => {
         const error = res.error;
         if (!error) {

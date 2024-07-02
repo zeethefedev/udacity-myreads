@@ -5,18 +5,20 @@ import { SHELVES } from "../utils/books.utils";
 function SelectMoveTo({ value, handleMoveTo }) {
   return (
     <select onChange={handleMoveTo} value={value}>
-      <option value="" disabled>
+      <option key="" value="" disabled>
         Move to...
       </option>
-      {SHELVES.map((opt) => (
-        <option value={opt}>{opt}</option>
+      {SHELVES.map((opt, index) => (
+        <option key={index} value={opt}>
+          {opt}
+        </option>
       ))}
     </select>
   );
 }
 
 function Book({ book, handleUpdateBook }) {
-  const { id, imageLinks, title, authors, shelf } = book;
+  const { imageLinks, title, authors, shelf } = book;
 
   const handleMoveTo = (e) => {
     const newShelf = e.target.value;
@@ -43,8 +45,10 @@ function Book({ book, handleUpdateBook }) {
       <div className="book-title">{title}</div>
       {authors && (
         <>
-          {authors.map((author) => (
-            <div className="book-authors">{author}</div>
+          {authors.map((author, index) => (
+            <div key={index} className="book-authors">
+              {author}
+            </div>
           ))}
         </>
       )}
