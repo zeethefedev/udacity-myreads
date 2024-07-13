@@ -37,7 +37,6 @@ function BookDetails() {
 
   useEffect(() => {
     get(id).then((res) => {
-      console.log(res);
       setBook(res);
     });
   }, []);
