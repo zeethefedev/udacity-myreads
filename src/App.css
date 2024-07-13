@@ -202,3 +202,14 @@
   text-align: center;
   font-size: 0.8em;
 }
+
+.book-details {
+  display: grid;
+  column-gap: 24px;
+  grid-template-columns: auto auto;
+  justify-content: center;
+}
+
+.book-description {
+  text-align: left;
+}

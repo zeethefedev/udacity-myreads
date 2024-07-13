@@ -3,6 +3,7 @@ import Search from "./pages/Search";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
+import BookDetails from "./pages/BookDetails";
 
 function App() {
   const [allBooks, setAllBooks] = useState([]);
@@ -20,6 +21,7 @@ function App() {
           element={<Home allBooks={allBooks} setAllBooks={handleSetAllBooks} />}
         />
         <Route path="search" element={<Search allBooks={allBooks} />} />
+        <Route path="book/:id" element={<BookDetails />} />
       </Routes>
     </div>
   );

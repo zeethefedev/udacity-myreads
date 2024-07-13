@@ -1,6 +1,7 @@
 import React from "react";
 import { update } from "../utils/BooksAPI";
 import { SHELVES } from "../utils/books.utils";
+import { useNavigate } from "react-router-dom";
 
 function SelectMoveTo({ value, handleMoveTo }) {
   return (
@@ -17,14 +18,18 @@ function SelectMoveTo({ value, handleMoveTo }) {
   );
 }
 
-function Book({ book, handleUpdateBook }) {
-  const { imageLinks, title, authors, shelf } = book;
+function Book({ book, handleUpdateBook, isDetailPage = false }) {
+  const { id, imageLinks, title, authors, shelf } = book;
 
   const handleMoveTo = (e) => {
     const newShelf = e.target.value;
     update(book, newShelf).then((res) => {
       handleUpdateBook && handleUpdateBook(res);
     });
+  };
+  const navigate = useNavigate();
+  const handleGetBook = () => {
+    navigate(`/book/${id}`);
   };
 
   return (
@@ -37,10 +42,13 @@ function Book({ book, handleUpdateBook }) {
             height: 193,
             backgroundImage: `url(${imageLinks?.thumbnail})`,
           }}
+          onClick={!isDetailPage && handleGetBook}
         ></div>
-        <div className="book-shelf-changer">
-          <SelectMoveTo value={shelf} handleMoveTo={handleMoveTo} />
-        </div>
+        {!isDetailPage && (
+          <div className="book-shelf-changer">
+            <SelectMoveTo value={shelf} handleMoveTo={handleMoveTo} />
+          </div>
+        )}
       </div>
       <div className="book-title">{title}</div>
       {authors && (
