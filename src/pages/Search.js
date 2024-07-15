@@ -9,18 +9,15 @@ function Search({ allBooks }) {
   const [bookResult, setBookResult] = useState();
   const [notFoundMessage, setNotFoundMessage] = useState();
 
-  const handleSetSearch = (e) => {
+  const handleSearch = (e) => {
     const newSearchText = e.target.value;
     setSearchText(newSearchText);
+
     if (!newSearchText) {
       setBookResult();
       setNotFoundMessage();
-    }
-  };
-
-  const handleSearch = (e) => {
-    if (searchText && e.key === "Enter") {
-      search(searchText).then((res) => {
+    } else {
+      search(newSearchText).then((res) => {
         const error = res.error;
         if (!error) {
           const newBooks = updateBookSearch(allBooks, res);
@@ -44,8 +41,7 @@ function Search({ allBooks }) {
             type="text"
             placeholder="Search by title, author, or ISBN"
             value={searchText}
-            onChange={handleSetSearch}
-            onKeyDown={handleSearch}
+            onChange={handleSearch}
           />
         </div>
       </div>
