@@ -38,8 +38,8 @@ function Home({ allBooks, setAllBooks }) {
   };
 
   const handleUpdateBook = (newShelf) => {
-    const newBooks = updateBooks(allBooks, newShelf);
-    setAllBooks(newBooks);
+    const books = updateBooks(allBooks, newShelf);
+    setAllBooks(books);
   };
 
   return (
